@@ -3,37 +3,69 @@ require 'config.php';
 require 'header.php';
 
 //variables to store data from forms
-$username = $email = $password1 = $password2 = '';
-$userType = false;
+$username = $email = $password1 = $password2 = $user_type = '';
 
 //variables to store error messages
-$password1_err= $password2_err='';
+$password1_err= $password2_err= $username_err = $email_err = '';
 
 //check request method and start grabbing data from form
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $username = cleanData($_POST['username']);
-    $email = cleanData($_POST['email']);
-    $password1 = $_POST['password1'];
-    $password2 = $_POST['password2'];
-    $userType = $_POST['user-type'];
+if (isset($_POST['btn_signup'])){
 
-    if ($userType == 'supplier'){
-        $userType = true;
+    if (isset($_POST['username'])){
+        $username = $_POST['username'];
+    }else{
+        $username_err = 'Please fill this field';
+    }
+
+    if (isset($_POST['email'])){
+        $email = $_POST['email'];
+    }else{
+        $email_err = 'Please fill this field';
+    }
+
+    if (isset($_POST['password1'])){
+        $password1 = $_POST['password1'];
+    }else{
+        $password1_err = 'Please fill this field';
+    }
+
+    if (isset($_POST['password2'])){
+        $password2 = $_POST['password2'];
+    }else{
+        $password2_err = 'Please fill this field';
+    }
+
+    if (isset($_POST['user-type'])){
+        $user_type = $_POST['user-type'];
     }
 
     //check if passwords match
     if ($password1 != $password2){
-        $password2_err = 'Oops! Your passwords dont seem to match';
+        $password2_err = 'Oops! Your passwords do not seem to match';
     }else{
+        //check if user exists
+        $sql = "SELECT * FROM `users` WHERE email = '$email'";
+        //results from db
+        $results = mysqli_query($conn,$sql);
+        if (mysqli_num_rows($results) > 0){
+            //user exists, go to login page
+            header("location:login.php");
+            exit();
+        }
+
         //hash password
         $password1 = md5($password1);
-        $sql = "INSERT INTO `users`(`id`, `username`, `email`, `password1`, `supplier`) VALUES (NULL ,'$username','$email','$password1','$userType')";
+
+        //add user to database
+        $sql = "INSERT INTO `users`(`id`, `username`, `email`, `password`, `user_type`) VALUES (NULL ,'$username','$email','$password1','$user_type')";
 
         if (mysqli_query($conn,$sql)){
-            echo "<ion-icon style = 'color: cornflowerblue; font-size: 25px;' name='cloud-upload-outline'></ion-icon>" . " Database updated!<br>";
+            //take user to login
+            header("location:login.php");
+            exit();
         }else{
-            echo "Data not added." . mysqli_error($conn) . "$sql<br>";
+            echo "Data not added: " . mysqli_error($conn) . "$sql<br>";
         }
 
     }
@@ -77,12 +109,11 @@ function cleanData($data){
                             <span>
                                 Supplier <input type="radio" name="user-type" value="supplier">
                             </span>
-                            <div class="input-group">
                             <span>
-                                Customer <input type="radio" name="user-type" value="customer">
+                                Customer <input type="radio" name="user-type" value="customer" checked>
                             </span>
                         </div>
-                            <div class="button btn btn-warning btn-block">Create Account</div>
+                            <button class="button btn btn-warning btn-block" name = "btn_signup">Create Account</button>
                     </fieldset>
                 </form>
             </div>
