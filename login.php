@@ -26,7 +26,7 @@ if (isset($_POST['btn-login'])){
         //hash password
         $password = md5($password);
 
-        $sql = "SELECT `id`, `email`, `password` FROM `users` WHERE email = '$email' AND password = '$password'";
+    $sql = "SELECT `id`, `email`, `password` FROM `users` WHERE email = '$email' AND password = '$password'";
 
     //results from db
     $results = mysqli_query($conn,$sql);
@@ -41,9 +41,10 @@ if (isset($_POST['btn-login'])){
             session_start();
             $_SESSION['kipande'] = $id;
             $_SESSION['loggedin'] = true;
+            $_SESSION['email'] = $email;
 
             //return user to index page
-            header("location:index.php");
+            header("location:index.php?msg_login");
             exit();
         }
 

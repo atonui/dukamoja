@@ -25,16 +25,32 @@
             <li class="nav-item active">
                 <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="signup.php">Signup</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
+
+            <?php
+            session_start();
+            //if user is logged in then display logout button
+                if (isset($_SESSION['loggedin'])){
+                    echo '
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout.php">Logout</a>
+                        </li>                    
+                    ';
+                }else{
+                    echo '
+                        <li class="nav-item">
+                             <a class="nav-link" href="signup.php">Signup</a>
+                        </li>
+                        <li class="nav-item">
+                             <a class="nav-link" href="login.php">Login</a>
+                        </li>
+                    ';
+                }
+            ?>
+
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
         </form>
     </div>
 </nav>
