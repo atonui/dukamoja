@@ -26,7 +26,7 @@ if (isset($_POST['btn-login'])){
         //hash password
         $password = md5($password);
 
-    $sql = "SELECT `id`, `email`, `password` FROM `users` WHERE email = '$email' AND password = '$password'";
+    $sql = "SELECT `id`, `email`, `password`, `user_type` FROM `users` WHERE email = '$email' AND password = '$password'";
 
     //results from db
     $results = mysqli_query($conn,$sql);
@@ -36,15 +36,23 @@ if (isset($_POST['btn-login'])){
         while ($rows = mysqli_fetch_assoc($results)){
             $id = $rows['id'];
             $email = $rows['email'];
-
+            $user_type = $rows['user_type'];
             //create session for user
             session_start();
             $_SESSION['kipande'] = $id;
             $_SESSION['loggedin'] = true;
             $_SESSION['email'] = $email;
 
+            if ($user_type == 'supplier'){
+                $_SESSION['aina_ya_mtumizi'] = true;
+            }else{
+                $_SESSION['aina_ya_mtumizi'] = false;
+            }
+
+
             //return user to index page
             header("location:index.php?msg_login");
+            //header("location:index.php?$user_type");
             exit();
         }
 

@@ -29,22 +29,34 @@
             <?php
             session_start();
             //if user is logged in then display logout button
-                if (isset($_SESSION['loggedin'])){
+            if (isset($_SESSION['aina_ya_mtumizi'])){
+                $user = $_SESSION['aina_ya_mtumizi'];
+                if ($user) {
+                    echo '
+                        <li class="nav-item">
+                                <a class="nav-link" href="dashboard.php">Dashboard</a>
+                            </li>  
+                ';
+                }
+            }
+
+                if (isset($_SESSION['loggedin'])) {
                     echo '
                         <li class="nav-item">
                             <a class="nav-link" href="logout.php">Logout</a>
                         </li>                    
                     ';
+
                 }else{
-                    echo '
-                        <li class="nav-item">
-                             <a class="nav-link" href="signup.php">Signup</a>
-                        </li>
-                        <li class="nav-item">
-                             <a class="nav-link" href="login.php">Login</a>
-                        </li>
-                    ';
-                }
+                        echo '
+                            <li class="nav-item">
+                                 <a class="nav-link" href="signup.php">Signup</a>
+                            </li>
+                            <li class="nav-item">
+                                 <a class="nav-link" href="login.php">Login</a>
+                            </li>
+                        ';
+                    }
             ?>
 
         </ul>

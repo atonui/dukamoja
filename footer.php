@@ -1,4 +1,6 @@
-
+<div class="footer container-fluid" style="background-color: black; text-align: center; color: seashell; padding: 10px;">
+    <p>&copy; Purple Systems 2020</p>
+</div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>

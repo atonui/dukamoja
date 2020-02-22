@@ -50,7 +50,7 @@ if (isset($_POST['btn_signup'])){
         $results = mysqli_query($conn,$sql);
         if (mysqli_num_rows($results) > 0){
             //user exists, go to login page
-            header("location:login.php");
+            header("location:login.php?signed_up");
             exit();
         }
 
