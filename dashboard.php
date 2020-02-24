@@ -1,11 +1,44 @@
 <?php
 require 'config.php';
 require 'header.php';
+$title = $description = '';
+$price = 0;
+//image upload variables
+$target_dir = "static/images/";
+
+if (isset($_POST['add-product'])){
+    //get data from product form
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $price = $_POST['price'];
+
+    $target_file = $target_dir.basename($_FILES['productImg']['name']);
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+    //push data to products table
+    $sql = "INSERT INTO `products`(`id`, `suplier_id`, `title`, `price`, `description`, `image`, `time_posted`) VALUES (NULL ,'2','$title','$price','$description','$target_file.$imageFileType',CURRENT_TIMESTAMP )";
+    if (mysqli_query($conn,$sql)){
+        echo "Data added";
+    }else{
+        echo "
+            <div class=\"alert alert-danger\" role=\"alert\">".
+                mysqli_error($conn)
+            ."</div>
+        ";
+    }
+
+}
 ?>
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-lg-8 col-xl-8">
 <!--            table-->
+            <?php
+            //read db an if there is data then display it in table
+            //otherwise display a message sayin no products
+
+
+            ?>
             <table class="table">
                 <thead>
                 <tr>
@@ -24,22 +57,10 @@ require 'header.php';
                     <td>@mdo</td>
                     <td>@mdo</td>
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    <td>@twitter</td>
-                </tr>
+
                 </tbody>
             </table>
+            ?>
         </div>
         <div class="col-md-4 col-lg-4 col-xl-4">
 <!--            form to add product-->
